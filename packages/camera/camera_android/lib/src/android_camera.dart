@@ -256,8 +256,9 @@ class AndroidCamera extends CameraPlatform {
     throw CameraException('InvalidCall', 'Pause and resume are not supported for onStreamedFrameAvailable');
   }
 
-  Future<void> setFocusDistance(double distance) async {
-    assert(distance >= 0);
+  @override
+  Future<void> setFocusDistance(int cameraId, double? distance) async {
+    assert((distance ?? 0) >= 0);
     await _hostApi.setFocusDistance(distance);
   }
 

@@ -25,6 +25,7 @@ class CameraValue {
     required this.focusMode,
     required this.deviceOrientation,
     required this.description,
+    this.focusDistance = 0.0,
     this.lockedCaptureOrientation,
     this.recordingOrientation,
     this.isPreviewPaused = false,
@@ -45,6 +46,7 @@ class CameraValue {
           deviceOrientation: DeviceOrientation.portraitUp,
           isPreviewPaused: false,
           description: description,
+          focusDistance: 0.0,
         );
 
   /// True after [CameraController.initialize] has completed successfully.
@@ -73,6 +75,7 @@ class CameraValue {
   /// Is `null` until [isInitialized] is `true`.
   final Size? previewSize;
 
+  final double focusDistance;
   /// The flash mode the camera is currently set to.
   final FlashMode flashMode;
 
@@ -112,6 +115,7 @@ class CameraValue {
     ExposureMode? exposureMode,
     FocusMode? focusMode,
     bool? exposurePointSupported,
+    double? focusDistance,
     bool? focusPointSupported,
     DeviceOrientation? deviceOrientation,
     Optional<DeviceOrientation>? lockedCaptureOrientation,
@@ -130,6 +134,7 @@ class CameraValue {
       flashMode: flashMode ?? this.flashMode,
       exposureMode: exposureMode ?? this.exposureMode,
       focusMode: focusMode ?? this.focusMode,
+
       deviceOrientation: deviceOrientation ?? this.deviceOrientation,
       lockedCaptureOrientation: lockedCaptureOrientation == null
           ? this.lockedCaptureOrientation
@@ -379,6 +384,11 @@ class CameraController extends ValueNotifier<CameraValue> {
   Future<void> setExposureMode(ExposureMode mode) async {
     await CameraPlatform.instance.setExposureMode(_cameraId, mode);
     value = value.copyWith(exposureMode: mode);
+  }
+
+  Future<void> setFocusDistance(double distance) async {
+    await CameraPlatform.instance.setFocusDistance(_cameraId, distance);
+    value = value.copyWith(focusDistance: distance);
   }
 
   /// Sets the exposure offset for the selected camera.
