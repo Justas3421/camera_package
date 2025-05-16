@@ -19,10 +19,7 @@ enum PlatformCameraLensDirection {
 
 /// Pigeon equivalent of [CameraDescription].
 class PlatformCameraDescription {
-  PlatformCameraDescription(
-      {required this.name,
-      required this.lensDirection,
-      required this.sensorOrientation});
+  PlatformCameraDescription({required this.name, required this.lensDirection, required this.sensorOrientation});
 
   final String name;
   final PlatformCameraLensDirection lensDirection;
@@ -94,11 +91,7 @@ enum PlatformResolutionPreset {
 /// Pigeon equivalent of [MediaSettings].
 class PlatformMediaSettings {
   PlatformMediaSettings(
-      {required this.resolutionPreset,
-      required this.enableAudio,
-      this.fps,
-      this.videoBitrate,
-      this.audioBitrate});
+      {required this.resolutionPreset, required this.enableAudio, this.fps, this.videoBitrate, this.audioBitrate});
   final PlatformResolutionPreset resolutionPreset;
   final int? fps;
   final int? videoBitrate;
@@ -182,6 +175,9 @@ abstract class CameraApi {
   @async
   void setExposurePoint(PlatformPoint? point);
 
+  @async
+  void setFocusPoint(PlatformPoint? point);
+
   /// Returns the minimum exposure offset of the camera with the given ID.
   double getMinExposureOffset();
 
@@ -203,7 +199,7 @@ abstract class CameraApi {
   ///
   /// A null value resets to the default focus point.
   @async
-  void setFocusPoint(PlatformPoint? point);
+  void setFocusDistance(double? distance);
 
   /// Returns the maximum zoom level of the camera with the given ID.
   double getMaxZoomLevel();

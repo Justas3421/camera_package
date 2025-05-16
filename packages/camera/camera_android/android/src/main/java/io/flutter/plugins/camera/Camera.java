@@ -79,6 +79,8 @@ class Camera
     implements CameraCaptureCallback.CameraCaptureStateListener,
         ImageReader.OnImageAvailableListener {
   private static final String TAG = "Camera";
+// near top of class
+  private float manualFocusDistance = 0f;
 
   /**
    * Holds all of the camera features/settings and will be used to update the request builder when
@@ -1097,6 +1099,30 @@ class Camera
   DeviceOrientationManager getDeviceOrientationManager() {
     return cameraFeatures.getSensorOrientation().getDeviceOrientationManager();
   }
+
+public void setFocusDistance(float distance) throws CameraAccessException {
+  this.manualFocusDistance = distance;
+
+  // Turn off auto-focus
+  previewRequestBuilder.set(
+    CaptureRequest.CONTROL_AF_MODE,
+    CaptureRequest.CONTROL_AF_MODE_OFF
+  );
+
+  // Apply the manual distance
+  previewRequestBuilder.set(
+    CaptureRequest.LENS_FOCUS_DISTANCE,
+    distance
+  );
+
+  // Push the update
+  captureSession.setRepeatingRequest(
+    previewRequestBuilder.build(),
+    captureCallback,
+    backgroundHandler
+  );
+}
+
 
   /**
    * Sets zoom level from dart.

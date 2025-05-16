@@ -197,6 +197,17 @@ final class CameraApiImpl implements Messages.CameraApi {
   }
 
   @Override
+  public void setFocusDistance(
+      @NonNull Double distance, @NonNull Messages.VoidResult result) {
+    try {
+      camera.setFocusDistance(distance.floatValue());
+      result.success();
+    } catch (Exception e) {
+      handleException(e, result);
+    }
+  }
+
+  @Override
   public void setFlashMode(
       @NonNull Messages.PlatformFlashMode flashMode, @NonNull Messages.VoidResult result) {
     FlashMode mode = CameraUtils.flashModeFromPigeon(flashMode);
