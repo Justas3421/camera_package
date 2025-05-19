@@ -258,6 +258,7 @@ class AndroidCamera extends CameraPlatform {
 
   @override
   Future<void> setFocusDistance(int cameraId, double? distance) async {
+    print("called focus distance in AndroidCamera"); 
     assert((distance ?? 0) >= 0);
     await _hostApi.setFocusDistance(distance);
   }

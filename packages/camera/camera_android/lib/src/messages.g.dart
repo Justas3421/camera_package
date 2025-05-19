@@ -908,6 +908,7 @@ class CameraApi {
   ///
   /// A null value resets to the default focus point.
   Future<void> setFocusDistance(double? distance) async {
+    print("Sent pigen message for focus distance");
     final String pigeonVar_channelName = 'dev.flutter.pigeon.camera_android.CameraApi.setFocusDistance$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,

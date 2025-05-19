@@ -387,6 +387,7 @@ class CameraController extends ValueNotifier<CameraValue> {
   }
 
   Future<void> setFocusDistance(double distance) async {
+    print("Called setFocusDistance");
     await CameraPlatform.instance.setFocusDistance(_cameraId, distance);
     value = value.copyWith(focusDistance: distance);
   }
