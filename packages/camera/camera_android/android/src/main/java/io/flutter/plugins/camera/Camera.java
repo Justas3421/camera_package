@@ -1118,7 +1118,7 @@ public void setFocusDistance(float distance) throws CameraAccessException {
   // Push the update
   captureSession.setRepeatingRequest(
     previewRequestBuilder.build(),
-    captureCallback,
+    cameraCaptureCallback,
     backgroundHandler
   );
 }
