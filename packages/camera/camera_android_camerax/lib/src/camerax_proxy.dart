@@ -347,6 +347,7 @@ class CameraXProxy {
 
   static CameraSelector _defaultFrontCameraCameraSelector() =>
       CameraSelector.defaultFrontCamera;
+      
 
   static ResolutionStrategy _highestAvailableStrategyResolutionStrategy() =>
       ResolutionStrategy.highestAvailableStrategy;
