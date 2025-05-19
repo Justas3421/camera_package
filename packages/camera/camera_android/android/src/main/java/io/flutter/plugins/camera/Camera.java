@@ -1099,29 +1099,33 @@ class Camera
   DeviceOrientationManager getDeviceOrientationManager() {
     return cameraFeatures.getSensorOrientation().getDeviceOrientationManager();
   }
-
 public void setFocusDistance(float distance) throws CameraAccessException {
-  this.manualFocusDistance = distance;
+   Log.d("CameraPlugin", "Setting focus distance to " + distance);
+  // 1) Make sure the device even supports it.
+  Float minFocus = characteristics.get(CameraCharacteristics.LENS_INFO_MINIMUM_FOCUS_DISTANCE);
+  if (minFocus == null || minFocus == 0f) {
+    Log.w(TAG, "Manual focus not supported");
+    return;
+  }
+  distance = Math.max(0f, Math.min(distance, minFocus));
 
-  // Turn off auto-focus
-  previewRequestBuilder.set(
-    CaptureRequest.CONTROL_AF_MODE,
-    CaptureRequest.CONTROL_AF_MODE_OFF
-  );
+  // 2) Cancel any AF in flight, then turn AF off.
+  previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+                            CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+  previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+                            CaptureRequest.CONTROL_AF_MODE_OFF);
 
-  // Apply the manual distance
-  previewRequestBuilder.set(
-    CaptureRequest.LENS_FOCUS_DISTANCE,
-    distance
-  );
+  // 3) Apply your focus distance (in diopters).
+  previewRequestBuilder.set(CaptureRequest.LENS_FOCUS_DISTANCE, distance);
 
-  // Push the update
+  // 4) Send it to the camera.
   captureSession.setRepeatingRequest(
     previewRequestBuilder.build(),
     cameraCaptureCallback,
     backgroundHandler
   );
 }
+
 
 
   /**
